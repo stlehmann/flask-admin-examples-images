@@ -1,5 +1,5 @@
 import os
-from flask import Flask, url_for
+from flask import Flask, url_for, request, jsonify
 from flask.ext.admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import form
@@ -67,9 +67,6 @@ class ImageView(ModelView):
         'path': _list_thumbnail
     }
 
-    # Alternative way to contribute field is to override it completely.
-    # In this case, Flask-Admin won't attempt to merge various parameters for
-    # the field.
     form_extra_fields = {
         'path': form.ImageUploadField(
             'Image', base_path=file_path, thumbnail_size=(100, 100, True))
@@ -83,6 +80,16 @@ admin.add_view(ImageView(Image, db.session))
 @app.route('/')
 def index():
     return 'Hello World'
+
+
+@app.route('/_image-url')
+def _get_image_url():
+    img_id = request.args.get('img_id')
+    img = Image.query.get(img_id)
+    if img is None:
+        response = jsonify(status='not found')
+        return response
+    return jsonify(img_path=img.path, status='ok')
 
 
 def build_sample_db():

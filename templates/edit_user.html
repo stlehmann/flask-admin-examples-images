@@ -5,9 +5,18 @@
 <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
 <script>
   $(document).ready(function() {
-    $('select').on('select2-selecting', function(event) {
-      var img_name = event.object.text
-          $('img').prop('src', {{ url_for('static', filename='') }} + img_name + '.jpg');
+    $('select').on('change', function(event) {
+      var img_id = $(this).val();
+      $.getJSON(
+        '{{ url_for('_get_image_url') }}',
+        {img_id: img_id}, 
+        function(data) {
+          if (data.status == 'ok') {
+            $('img').prop('src', {{ url_for('static', filename='') }} + data.img_path);
+          }
+          else {
+          }
+        });
     });
   });
 </script
