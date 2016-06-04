@@ -1,0 +1,19 @@
+{% extends 'admin/model/edit.html' %}
+
+{% block head %}
+{{ super() }}
+<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+    $('select').on('select2-selecting', function(event) {
+      var img_name = event.object.text
+          $('img').prop('src', {{ url_for('static', filename='') }} + img_name + '.jpg');
+    });
+  });
+</script
+{% endblock %}
+
+{% block edit_form %}
+{{ super() }}
+<img src="{{ url_for('static', filename=model.image.path) }}" style="max-height:200px;">
+{% endblock %}
