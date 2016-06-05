@@ -83,7 +83,7 @@ def index():
 
 
 @app.route('/_image-url')
-def get_image_url():
+def _get_image_url():
     img_id = request.args.get('img_id')
     img = Image.query.get(img_id)
     if img is None:
