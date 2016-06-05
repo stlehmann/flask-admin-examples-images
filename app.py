@@ -102,12 +102,6 @@ def build_sample_db():
         user.username = u
         db.session.add(user)
 
-    images = ["Buffalo", "Elephant", "Leopard", "Lion", "Rhino"]
-    for name in images:
-        image = Image()
-        image.name = name
-        image.path = name.lower() + ".jpg"
-        db.session.add(image)
     db.session.commit()
 
 
